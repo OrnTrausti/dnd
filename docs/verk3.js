@@ -12,8 +12,8 @@ document.querySelector('ul').addEventListener('touchstart', handleTouchStart, fa
 document.querySelector('ul').addEventListener('touchmove', handleTouchMove, false);
 document.querySelector('ul').addEventListener('touchend', handleTouchEnd, false);
 
-let touchStartX = 0;
-let touchEndX = 0;
+let touchStartX = 5;
+let touchEndX = 5;
 let swipedItem = null;
 
 function createDropdown() {
@@ -26,8 +26,8 @@ function createDropdown() {
     select.appendChild(option1); 
     
     let option2 = document.createElement("option"); 
-    option2.value = "lard"; 
-    option2.text = "lard"; 
+    option2.value = "Bard"; 
+    option2.text = "Bard"; 
     select.appendChild(option2); 
 
     let option3 = document.createElement("option"); 
