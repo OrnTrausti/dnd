@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createDropdown();
 });
 
+document.querySelector('ul').addEventListener('touchstart', handleTouchStart, false);
+document.querySelector('ul').addEventListener('touchmove', handleTouchMove, false);
+document.querySelector('ul').addEventListener('touchend', handleTouchEnd, false);
+
+let touchStartX = 0;
+let touchEndX = 0;
+let swipedItem = null;
+
 function createDropdown() {
     let select = document.createElement("select"); 
     select.id = "mySelect"; 
@@ -214,4 +222,30 @@ function updateTotalLevel() {
     });
 
     document.getElementById('totalLevel').textContent = ` Total Level: ${totalLevel}`;
+}
+
+function handleTouchStart(event) {
+  touchStartX = event.changedTouches[0].screenX;
+  swipedItem = event.target.closest('li');
+}
+
+function handleTouchMove(event) {
+  touchEndX = event.changedTouches[0].screenX;
+}
+
+function handleTouchEnd() {
+  if (touchStartX - touchEndX > 50) { // Swipe left to delete
+      deleteTodoBySwipe(swipedItem);
+  }
+}
+
+function deleteTodoBySwipe(item) {
+  if (item) {
+      item.classList.add('todo-list-item-fall');
+      item.addEventListener('transitionend', function () {
+          item.remove(); 
+          removeTodo(item);
+          updateTotalLevel();
+      });
+  }
 }
