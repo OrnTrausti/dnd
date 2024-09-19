@@ -12,8 +12,10 @@ document.querySelector('ul').addEventListener('touchstart', handleTouchStart, fa
 document.querySelector('ul').addEventListener('touchmove', handleTouchMove, false);
 document.querySelector('ul').addEventListener('touchend', handleTouchEnd, false);
 
-let touchStartX = 5;
-let touchEndX = 5;
+let touchStartX = 0;
+let touchEndX = 0;
+let touchStartTime = 0;
+let touchEndTime = 0;
 let swipedItem = null;
 
 function createDropdown() {
@@ -225,19 +227,25 @@ function updateTotalLevel() {
 }
 
 function handleTouchStart(event) {
-  touchStartX = event.changedTouches[0].screenX;
-  swipedItem = event.target.closest('li');
-}
-
-function handleTouchMove(event) {
-  touchEndX = event.changedTouches[0].screenX;
-}
-
-function handleTouchEnd() {
-  if (touchStartX - touchEndX > 50) { // Swipe left to delete
-      deleteTodoBySwipe(swipedItem);
+    touchStartX = event.changedTouches[0].screenX;
+    touchStartTime = new Date().getTime();
+    swipedItem = event.target.closest('li');
   }
-}
+  
+  function handleTouchMove(event) {
+    touchEndX = event.changedTouches[0].screenX;
+  }
+  
+  function handleTouchEnd() {
+    touchEndTime = new Date().getTime();
+    const deltaX = touchStartX - touchEndX;
+    const deltaTime = touchEndTime - touchStartTime;
+    const velocity = Math.abs(deltaX / deltaTime);
+  
+    if (deltaX > 100 && velocity > 0.3) {
+        deleteTodoBySwipe(swipedItem);
+    }
+  }
 
 function deleteTodoBySwipe(item) {
   if (item) {
