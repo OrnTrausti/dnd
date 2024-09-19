@@ -228,10 +228,10 @@ function updateTotalLevel() {
 
 function handleTouchMove(event) {
     touchEndX = event.changedTouches[0].screenX;
-    const middleX = touchEndX - touchStartX;
+    const avrgX = touchEndX - touchStartX;
 
     if (swipedItem) {
-        swipedItem.style.transform = `translateX(${middleX}px)`;
+        swipedItem.style.transform = `translateX(${avrgX}px)`;
     }
 }
 
@@ -243,11 +243,11 @@ function handleTouchStart(event) {
   
 function handleTouchEnd() {
     touchEndtime = new Date().getTime();
-    const middleX = touchStartX - touchEndX;
-    const deltaTime = touchEndtime - touchStartTime;
-    const velocity = Math.abs(middleX / deltaTime);
+    const avrgX = touchStartX - touchEndX;
+    const avrgTime = touchEndtime - touchStartTime;
+    const velocity = Math.abs(avrgX / avrgTime);
 
-    if (middleX > 50 && velocity > 0.2 && deltaTime > 100)  { // I dislike this part needed to add Time so it would not just delet when you touch it since you started with 200 velocity? (took me to long to find that out)
+    if (avrgX > 50 && velocity > 0.2 && avrgTime > 100)  { // I dislike this part needed to add Time so it would not just delete when you touch it since you started with 200 velocity? (took me to long to find that out)
             deleteClassBySwipe(swipedItem);
         } else {
             if (swipedItem) {
