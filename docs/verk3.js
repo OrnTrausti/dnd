@@ -15,7 +15,7 @@ document.querySelector('ul').addEventListener('touchend', handleTouchEnd, false)
 let touchStartX = 0;
 let touchEndX = 0;
 let touchStartTime = 0;
-let touchEndTime = 0;
+let touchEndtime = 0;
 let swipedItem = null;
 
 function createDropdown() {
@@ -28,8 +28,8 @@ function createDropdown() {
     select.appendChild(option1); 
     
     let option2 = document.createElement("option"); 
-    option2.value = "lard"; 
-    option2.text = "lard"; 
+    option2.value = "Bard"; 
+    option2.text = "Bard"; 
     select.appendChild(option2); 
 
     let option3 = document.createElement("option"); 
@@ -226,28 +226,40 @@ function updateTotalLevel() {
     document.getElementById('totalLevel').textContent = ` Total Level: ${totalLevel}`;
 }
 
+function handleTouchMove(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    const middleX = touchEndX - touchStartX;
+
+    if (swipedItem) {
+        swipedItem.style.transform = `translateX(${middleX}px)`;
+    }
+}
+
 function handleTouchStart(event) {
     touchStartX = event.changedTouches[0].screenX;
     touchStartTime = new Date().getTime();
     swipedItem = event.target.closest('li');
-  }
+}
   
-  function handleTouchMove(event) {
-    touchEndX = event.changedTouches[0].screenX;
-  }
-  
-  function handleTouchEnd() {
-    touchEndTime = new Date().getTime();
-    const deltaX = touchStartX - touchEndX;
-    const deltaTime = touchEndTime - touchStartTime;
-    const velocity = Math.abs(deltaX / deltaTime);
-  
-    if (deltaX > 100 && velocity > 0.3) {
-        deleteTodoBySwipe(swipedItem);
-    }
-  }
+function handleTouchEnd() {
+    touchEndtime = new Date().getTime();
+    const middleX = touchStartX - touchEndX;
+    const deltaTime = touchEndtime - touchStartTime;
+    const velocity = Math.abs(middleX / deltaTime);
 
-function deleteTodoBySwipe(item) {
+    if (middleX > 50 && velocity > 0.2 && deltaTime > 100)  { // I dislike this part needed to add Time so it would not just delet when you touch it since you started with 200 velocity? (took me to long to find that out)
+            deleteClassBySwipe(swipedItem);
+        } else {
+            if (swipedItem) {
+                swipedItem.style.transition = 'transform 0.3s';
+                swipedItem.addEventListener('transitionend', function() {
+                swipedItem.style.transition = '';
+                });
+            }
+        }
+    }
+
+function deleteClassBySwipe(item) {
   if (item) {
       item.classList.add('todo-list-item-fall');
       item.addEventListener('transitionend', function () {
