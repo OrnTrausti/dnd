@@ -28,8 +28,8 @@ function createDropdown() {
     select.appendChild(option1); 
     
     let option2 = document.createElement("option"); 
-    option2.value = "Bard"; 
-    option2.text = "Bard"; 
+    option2.value = "lard"; 
+    option2.text = "lard"; 
     select.appendChild(option2); 
 
     let option3 = document.createElement("option"); 
