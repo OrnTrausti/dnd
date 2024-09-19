@@ -252,6 +252,7 @@ function handleTouchEnd() {
         } else {
             if (swipedItem) {
                 swipedItem.style.transition = 'transform 0.3s';
+                swipedItem.style.transform = 'translateX(0)';
                 swipedItem.addEventListener('transitionend', function() {
                 swipedItem.style.transition = '';
                 });
